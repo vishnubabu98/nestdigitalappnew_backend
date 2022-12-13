@@ -23,4 +23,8 @@ public interface EmployeeDao extends CrudRepository<Employees,Integer> {
     @Transactional
     @Query(value="UPDATE `employees` SET `address`= :address,`email`= :email,`empname`= :empname,`mobno`= :mobno,`username`= :username WHERE `id` = :id",nativeQuery = true)
     void updateEmployee(@Param("id")Integer id,@Param("address")String address,@Param("email")String email,@Param("empname")String empname,@Param("mobno")String mobno,@Param("username")String username);
+
+    @Query(value="SELECT `id`, `address`, `email`, `empcode`, `empname`, `mobno`, `password`, `username` FROM `employees` WHERE `email`= :email AND `password`= :password",nativeQuery = true)
+    List<Employees>employeeAuth(@Param("email")String email,@Param("password")String password);
+
 }

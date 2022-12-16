@@ -270,6 +270,30 @@ public class NestController {
         return (List<LeaveApplication>) ladao.adminleaveUpdate(la.getApplyingdate());
 
     }
+    @CrossOrigin(value = "*")
+    @PostMapping(path ="/leaveupdateStatus", consumes = "application/json", produces = "application/json")
+    public HashMap<String,String> adminUpdateLeaveStatus(@RequestBody LeaveApplication la)
+    {
+        HashMap<String,String> map = new HashMap<>();
+        ladao.leaveStatusUpdate(la.getId(),la.getStatus(),la.getUpdated());
+        map.put("status","success");
+        return map;
+
+
+    }
+    @CrossOrigin(value = "*")
+    @GetMapping(path ="/visitorlog")
+    public  List<VisitorLogEntry> viewallVisitorLog()
+    {
+        return (List<VisitorLogEntry>) vdao.findAll();
+    }
+    @CrossOrigin(value = "*")
+    @GetMapping(path ="/employeelog")
+    public  List<EmployeeLoginEntry> ViewEmployeeLog()
+    {
+        return (List<EmployeeLoginEntry>) eldao.findAll();
+    }
+
 
 
 

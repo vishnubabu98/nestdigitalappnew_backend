@@ -24,5 +24,10 @@ public interface LeaveApplicationDao extends CrudRepository<LeaveApplication,Int
 
     @Query(value = "SELECT `id`, `empid`, `end_date`, `leave_type`, `no_of_days`, `start_date`, `status`, `applyingdate`, `reason`, `updated` FROM `leaveapplication` WHERE `applyingdate` = :applyingdate",nativeQuery = true)
     List<LeaveApplication>adminleaveUpdate(@Param("applyingdate")String applyingdate);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE `leaveapplication` SET `status`= :status,`updated`= :updated WHERE `id`= :id",nativeQuery = true)
+    void leaveStatusUpdate(@Param("id") Integer id, @Param("status") Integer status,@Param("updated") Integer updated);
 }
 

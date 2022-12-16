@@ -293,6 +293,12 @@ public class NestController {
     {
         return (List<EmployeeLoginEntry>) eldao.findAll();
     }
+    @CrossOrigin(origins = "*")
+    @PostMapping(path="/securityprofile",consumes = "application/json", produces ="application/json")
+    public List<Security>securityProfile(@RequestBody Security e)
+    {
+        return (List<Security>)sdao.getSecurityProfile(e.getId());
+    }
 
 
 

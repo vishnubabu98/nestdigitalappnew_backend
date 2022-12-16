@@ -13,6 +13,9 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+
 @RestController
 public class NestController {
     @Autowired
@@ -122,28 +125,6 @@ public class NestController {
 
     }
     @CrossOrigin(origins = "*")
-    @PostMapping(path="/leavapplication",consumes = "application/json", produces ="application/json")
-    public HashMap<String, String> securityUpdate(@RequestBody LeaveApplication la)
-    {
-        SimpleDateFormat obj = new SimpleDateFormat("MM-dd-yyyy");
-        try
-        {
-            Date date1 = obj.parse(la.getStart_date());
-            Date date2 = obj.parse(la.getEnd_date());
-            long time_difference = date2.getTime() - date1.getTime();
-            long days_difference = (time_difference / (1000*60*60*24)) % 365;
-            la.setNo_of_days(days_difference);
-        }
-        catch (ParseException excep) {
-            excep.printStackTrace();
-        }
-        System.out.println(la.getNo_of_days());
-        HashMap<String,String> map = new HashMap<>();
-        ladao.save(la);
-        map.put("status","success");
-        return map;
-    }
-    @CrossOrigin(origins = "*")
     @PostMapping(path="/visitorlogentry",consumes = "application/json",produces = "application/json")
     public HashMap<String,String>VisitorLogEntry(@RequestBody VisitorLogEntry v)
     {
@@ -221,6 +202,76 @@ public class NestController {
         map.put("status","success");
         return map;
     }
+    @CrossOrigin(origins = "*")
+    @GetMapping("/viewemp")
+    public List<Employees>viewEmployees()
+    {
+        return (List<Employees>) dao.findAll();
+    }
+    @CrossOrigin(origins = "*")
+    @GetMapping("/viewsecurity")
+    public List<Security>viewSecurity()
+    {
+        return (List<Security>) sdao.findAll();
+    }
+    @CrossOrigin(origins = "*")
+    @PostMapping(path="/empprofile",consumes = "application/json", produces ="application/json")
+    public List<Employees>empprofile(@RequestBody Employees e)
+    {
+        return (List<Employees>)dao.getEmpProfile(e.getId());
+    }
+    @CrossOrigin(origins = "*")
+    @PostMapping(path="/leavapplication",consumes = "application/json", produces ="application/json")
+    public HashMap<String, String> leaveApplication(@RequestBody LeaveApplication la)
+    {
+        SimpleDateFormat obj = new SimpleDateFormat("yyyy-MM-dd");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+        String todaydate = dtf.format(now);
+
+        try
+        {
+            Date date1 = obj.parse(la.getStart_date());
+            Date date2 = obj.parse(la.getEnd_date());
+            long time_difference = date2.getTime() - date1.getTime();
+            long days_difference = (time_difference / (1000*60*60*24)) % 365;
+            la.setNo_of_days(days_difference+1);
+            la.setApplyingdate(todaydate);
+            ladao.save(la);
+
+
+
+        }
+        catch (ParseException excep) {
+            excep.printStackTrace();
+        }
+        System.out.println(la.getNo_of_days());
+        HashMap<String,String> map = new HashMap<>();
+        ladao.save(la);
+        map.put("status","success");
+        return map;
+
+
+    }
+    @CrossOrigin(value = "*")
+    @PostMapping(path ="/empleavestatus", consumes = "application/json", produces = "application/json")
+    public List<LeaveApplication> leaveApplicationStatus (@RequestBody LeaveApplication la)
+    {
+
+        return  (List<LeaveApplication>) ladao.leaveApplicationStatus(la.getEmpid());
+
+
+    }
+    @CrossOrigin(value = "*")
+    @PostMapping(path ="/adminleaveUpdate", consumes = "application/json", produces = "application/json")
+    public  List<LeaveApplication> adminleaveUpdate(@RequestBody LeaveApplication la)
+    {
+
+        return (List<LeaveApplication>) ladao.adminleaveUpdate(la.getApplyingdate());
+
+    }
+
+
 
 
 

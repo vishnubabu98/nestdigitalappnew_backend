@@ -18,11 +18,14 @@ public class LeaveApplication {
     private int status;
     private long no_of_days;
     private String leaveType;
+    private String reason;
+    private int updated;
+    private String applyingdate;
 
     public LeaveApplication() {
     }
 
-    public LeaveApplication(int id, int empid, String start_date, String end_date, int status, long no_of_days, String leaveType) {
+    public LeaveApplication(int id, int empid, String start_date, String end_date, int status, long no_of_days, String leaveType, String reason, int updated, String applyingdate) {
         this.id = id;
         this.empid = empid;
         this.start_date = start_date;
@@ -30,6 +33,9 @@ public class LeaveApplication {
         this.status = status;
         this.no_of_days = no_of_days;
         this.leaveType = leaveType;
+        this.reason = reason;
+        this.updated = updated;
+        this.applyingdate = applyingdate;
     }
 
     public int getId() {
@@ -86,5 +92,29 @@ public class LeaveApplication {
 
     public void setLeaveType(String leaveType) {
         this.leaveType = leaveType;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public int getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(int updated) {
+        this.updated = updated;
+    }
+
+    public String getApplyingdate() {
+        return applyingdate;
+    }
+
+    public void setApplyingdate(String applyingdate) {
+        this.applyingdate = applyingdate;
     }
 }

@@ -27,4 +27,6 @@ public interface EmployeeDao extends CrudRepository<Employees,Integer> {
     @Query(value="SELECT `id`, `address`, `email`, `empcode`, `empname`, `mobno`, `password`, `username` FROM `employees` WHERE `email`= :email AND `password`= :password",nativeQuery = true)
     List<Employees>employeeAuth(@Param("email")String email,@Param("password")String password);
 
+    @Query(value="SELECT `id`, `address`, `email`, `empcode`, `empname`, `mobno`, `password`, `username` FROM `employees` WHERE `id` = :id",nativeQuery = true)
+    List<Employees>getEmpProfile(@Param("id")Integer id);
 }
